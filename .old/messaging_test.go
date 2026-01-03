@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chaos-io/chaos/pkg/logs"
+	"github.com/chaos-io/chaos/logs"
 )
 
 func Test_Publish(t *testing.T) {

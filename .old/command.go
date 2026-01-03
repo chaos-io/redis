@@ -4,9 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/chaos-io/chaos/logs"
 	goredis "github.com/redis/go-redis/v9"
-
-	"github.com/chaos-io/chaos/pkg/logs"
 )
 
 func Do(ctx context.Context, args ...any) (any, error) {
