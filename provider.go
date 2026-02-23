@@ -14,7 +14,7 @@ type provider struct {
 
 var _ Cmdable = (*provider)(nil)
 
-func newProvider(cli redis.UniversalClient) Cmdable {
+func NewProvider(cli redis.UniversalClient) Cmdable {
 	return &provider{cli: cli}
 }
 

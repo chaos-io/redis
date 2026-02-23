@@ -33,10 +33,10 @@ func NewClient(cfg *Config) Cmdable {
 	normalizeConfig(cfg)
 
 	if len(cfg.Connections) == 1 {
-		return newProvider(newSingle(cfg))
+		return NewProvider(newSingle(cfg))
 	}
 
-	return newProvider(newCluster(cfg))
+	return NewProvider(newCluster(cfg))
 }
 
 func newSingle(cfg *Config) redis.UniversalClient {
