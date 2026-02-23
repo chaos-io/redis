@@ -68,3 +68,9 @@ type Pipeliner interface {
 	Exec(ctx context.Context) ([]redis.Cmder, error)
 	Discard()
 }
+
+// Advanced exposes low-level redis client.
+// ONLY for infrastructure or special cases.
+type Advanced interface {
+	Raw() redis.UniversalClient
+}

@@ -2,40 +2,32 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/redis/go-redis/v9"
 )
 
-// NewClient creates a new Redis client
-func NewClient(opts *redis.Options) (Cmdable, error) {
-	cli := redis.NewClient(opts)
-	return &provider{cli: cli}, nil
-}
-
-func Unwrap(cli Cmdable) (*redis.Client, bool) {
-	if p, ok := cli.(interface {
-		Raw() *redis.Client
-	}); ok {
-		return p.Raw(), true
-	}
-	return nil, false
-}
-
 type provider struct {
-	cli *redis.Client
-}
-
-func (p *provider) Exists(ctx context.Context, keys ...string) *redis.IntCmd {
-	return p.cli.Exists(ctx, keys...)
+	cli redis.UniversalClient
 }
 
 var _ Cmdable = (*provider)(nil)
 
+func newProvider(cli redis.UniversalClient) Cmdable {
+	return &provider{cli: cli}
+}
+
+var _ Advanced = (*provider)(nil)
+
 // Raw returns the underlying Redis client.
 // Use with caution.
-func (p *provider) Raw() *redis.Client {
+func (p *provider) Raw() redis.UniversalClient {
 	return p.cli
+}
+
+func (p *provider) Exists(ctx context.Context, keys ...string) *redis.IntCmd {
+	return p.cli.Exists(ctx, keys...)
 }
 
 func (p *provider) Decr(ctx context.Context, key string) *redis.IntCmd {
@@ -111,6 +103,9 @@ func (p *provider) HMGet(ctx context.Context, key string, fields ...string) *red
 }
 
 func (p *provider) HSet(ctx context.Context, key string, values ...any) *redis.IntCmd {
+	if len(values)%2 != 0 {
+		return redis.NewIntResult(0, errors.New("invalid hset values"))
+	}
 	return p.cli.HSet(ctx, key, values...)
 }
 
