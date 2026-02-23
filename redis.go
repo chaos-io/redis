@@ -13,13 +13,13 @@ var (
 )
 
 type Redis struct {
-	Client goredis.UniversalClient
+	goredis.UniversalClient
 }
 
 func GetRedis() goredis.UniversalClient {
 	redisClientOnce.Do(func() {
 		cfg := NewConfig()
-		redisClient = New(cfg).Client
+		redisClient = New(cfg)
 	})
 	return redisClient
 }
@@ -65,7 +65,7 @@ func New(cfg *Config) *Redis {
 			MaxRetryBackoff: cfg.MaxRetryBackoff,
 			MinRetryBackoff: cfg.MinRetryBackoff,
 		}
-		return &Redis{Client: goredis.NewClient(option)}
+		return &Redis{goredis.NewClient(option)}
 	}
 
 	clusterOption := &goredis.ClusterOptions{
@@ -79,5 +79,5 @@ func New(cfg *Config) *Redis {
 		MaxRetryBackoff: cfg.MaxRetryBackoff,
 		MinRetryBackoff: cfg.MinRetryBackoff,
 	}
-	return &Redis{Client: goredis.NewClusterClient(clusterOption)}
+	return &Redis{goredis.NewClusterClient(clusterOption)}
 }
