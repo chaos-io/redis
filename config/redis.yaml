@@ -1,3 +1,5 @@
 redis:
-  connects:
+  connections:
     - 127.0.0.1:6379
+  maxIdleConnections: 30
+  password: relief-map
