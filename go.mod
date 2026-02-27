@@ -3,7 +3,7 @@ module github.com/chaos-io/redis
 go 1.24.12
 
 require (
-	github.com/chaos-io/chaos v0.0.0-20260227020941-4650279af750
+	github.com/chaos-io/chaos v0.0.0-20260227040515-00ad1ca91e48
 	github.com/redis/go-redis/v9 v9.17.2
 )
 
